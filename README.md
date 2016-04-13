@@ -1,5 +1,7 @@
 mgos
 =====
+[![Build Status](https://travis-ci.org/ushios/mgos.svg?branch=master)](https://travis-ci.org/ushios/mgos)
+
 
 *M*ap *GO* to *S*truct
 
@@ -20,7 +22,7 @@ Documentation
 Example
 ========
 
-### Using url.Values 
+### Using url.Values
 
 ```go
 type Person struct {
