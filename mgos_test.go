@@ -1,17 +1,19 @@
 package mgos
 
 import (
+	"fmt"
 	"net/url"
 	"testing"
 )
 
 type Person struct {
-	FirstName string `mgos:"first_name"`
-	LastName  string `mgos:"last_name"`
-	Age       int    `mgos:"age"`
+	FirstName  string `mgos:"first_name"`
+	LastName   string `mgos:"last_name"`
+	Age        int    `mgos:"age"`
+	BirthMonth int    `mgos:"birth_month"`
 }
 
-func TestFromURLValues(t *testing.T) {
+func TestFromGetterUsingURLValues(t *testing.T) {
 	test := func(q string, expect Person) {
 		v, err := url.ParseQuery(q)
 		if err != nil {
@@ -19,7 +21,7 @@ func TestFromURLValues(t *testing.T) {
 		}
 
 		dest := Person{}
-		FromURLValues(v, &dest)
+		FromGetter(v, &dest)
 
 		if dest.FirstName != expect.FirstName {
 			t.Errorf("FirstName expected (%s) but (%s)", expect.FirstName, dest.FirstName)
@@ -39,4 +41,21 @@ func TestFromURLValues(t *testing.T) {
 		LastName:  "Satoshi",
 		Age:       18,
 	})
+}
+
+func ExampleFromGetter() {
+	v, _ := url.ParseQuery("first_name=Tanaka&last_name=Satoshi&age=18&birth_month=January")
+	dest := Person{}
+
+	FromGetter(v, &dest)
+
+	fmt.Println(dest.FirstName)
+	fmt.Println(dest.LastName)
+	fmt.Println(dest.Age)
+	fmt.Println(dest.BirthMonth)
+	// Output:
+	// Tanaka
+	// Satoshi
+	// 18
+	// 0
 }
