@@ -1,7 +1,7 @@
 mgos
 =====
 
-*M*ap *GO* to *S*truct
+**M**ap **GO** to **S**truct
 
 
 
