@@ -3,7 +3,7 @@ mgos
 [![Build Status](https://travis-ci.org/ushios/mgos.svg?branch=master)](https://travis-ci.org/ushios/mgos)
 
 
-*M*ap *GO* to *S*truct
+**M**ap **GO** to **S**truct
 
 
 
