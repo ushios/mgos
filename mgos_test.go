@@ -34,12 +34,17 @@ func TestFromGetterUsingURLValues(t *testing.T) {
 		if dest.Age != expect.Age {
 			t.Errorf("Age expected (%d) but (%d)", expect.Age, dest.Age)
 		}
+
+		if dest.BirthMonth != expect.BirthMonth {
+			t.Errorf("BirthMonth expected (%d) but (%d)", expect.BirthMonth, dest.BirthMonth)
+		}
 	}
 
 	test("first_name=Tanaka&last_name=Satoshi&age=18", Person{
-		FirstName: "Tanaka",
-		LastName:  "Satoshi",
-		Age:       18,
+		FirstName:  "Tanaka",
+		LastName:   "Satoshi",
+		Age:        18,
+		BirthMonth: 0,
 	})
 }
 
