@@ -1,7 +1,7 @@
 mgos
 =====
 [![Build Status](https://travis-ci.org/ushios/mgos.svg?branch=master)](https://travis-ci.org/ushios/mgos)
-
+[![Coverage Status](https://coveralls.io/repos/ushios/mgos/badge.svg?branch=master&service=github)](https://coveralls.io/github/ushios/mgos?branch=master)
 
 **M**ap **GO** to **S**truct
 
