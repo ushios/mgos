@@ -24,6 +24,10 @@ func FromGetter(getter Getter, dest interface{}) error {
 			field := elem.Field(i)
 			typeField := elem.Type().Field(i)
 			name := typeField.Tag.Get("mgos")
+			if name == "" {
+				continue
+			}		
+	
 			uv := getter.Get(name)
 
 			switch field.Interface().(type) {

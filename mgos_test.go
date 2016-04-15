@@ -11,6 +11,7 @@ type Person struct {
 	LastName   string `mgos:"last_name"`
 	Age        int    `mgos:"age"`
 	BirthMonth int    `mgos:"birth_month"`
+	Hobby      string
 }
 
 func TestFromGetterUsingURLValues(t *testing.T) {
@@ -46,6 +47,15 @@ func TestFromGetterUsingURLValues(t *testing.T) {
 		Age:        18,
 		BirthMonth: 0,
 	})
+
+	test("first_name=Inoue&last_name=Shingo&age=19&", Person{
+		FirstName:  "Inoue",
+		LastName:   "Shingo",
+		Age:        19,
+		BirthMonth: 0,
+		Hobby:      "tenis",
+	})
+
 }
 
 func ExampleFromGetter() {
