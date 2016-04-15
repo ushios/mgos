@@ -98,7 +98,7 @@ func TestFromGetterUsingURLValues(t *testing.T) {
 }
 
 func ExampleFromGetter() {
-	v, _ := url.ParseQuery("first_name=Tanaka&last_name=Satoshi&age=18&birth_month=January")
+	v, _ := url.ParseQuery("first_name=Tanaka&last_name=Satoshi&age=18&birth_month=January&is_alive=1")
 	dest := Person{}
 
 	FromGetter(v, &dest)
@@ -107,9 +107,11 @@ func ExampleFromGetter() {
 	fmt.Println(dest.LastName)
 	fmt.Println(dest.Age)
 	fmt.Println(dest.BirthMonth)
+	fmt.Println(dest.IsAlive)
 	// Output:
 	// Tanaka
 	// Satoshi
 	// 18
 	// 0
+	// true
 }
