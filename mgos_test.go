@@ -27,6 +27,7 @@ type Person struct {
 	BirthMonth int    `mgos:"birth_month"`
 	Gender     Gender `mgos:"gender"`
 	City       City   `mgos:"city"`
+	IsAlive    bool   `mgos:"is_alive"`
 	Hobby      string
 }
 
@@ -65,22 +66,33 @@ func TestFromGetterUsingURLValues(t *testing.T) {
 		}
 	}
 
-	test("first_name=Tanaka&last_name=Satoshi&age=18&gender=1&city=tokyo", Person{
+	test("first_name=Tanaka&last_name=Satoshi&age=18&gender=1&city=tokyo&is_alive=1", Person{
 		FirstName:  "Tanaka",
 		LastName:   "Satoshi",
 		Age:        18,
 		BirthMonth: 0,
 		Gender:     Male,
 		City:       Tokyo,
+		IsAlive:    true,
 	})
 
-	test("first_name=Inoue&last_name=Shingo&age=19&city=mexico&", Person{
+	test("first_name=Inoue&last_name=Shingo&age=19&city=mexico&&is_alive=0", Person{
 		FirstName:  "Inoue",
 		LastName:   "Shingo",
 		Age:        19,
 		BirthMonth: 0,
 		Hobby:      "tenis",
 		City:       "mexico",
+		IsAlive:    false,
+	})
+
+	test("first_name=John&last_name=Handen&age=1", Person{
+		FirstName:  "John",
+		LastName:   "Handen",
+		Age:        1,
+		BirthMonth: 0,
+		Hobby:      "video games",
+		IsAlive:    false,
 	})
 
 }

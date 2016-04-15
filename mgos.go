@@ -41,6 +41,10 @@ func FromGetter(getter Getter, dest interface{}) error {
 				}
 			case reflect.String:
 				field.SetString(uv)
+			case reflect.Bool:
+				if uv != "" && uv != "0" {
+					field.SetBool(true)
+				}
 			default:
 				panic(fmt.Sprintf("kind (%s) not supported", elem.Kind()))
 			}
