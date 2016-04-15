@@ -6,11 +6,27 @@ import (
 	"testing"
 )
 
+type Gender int
+
+const (
+	Male Gender = iota + 1
+	Female
+)
+
+type City string
+
+const (
+	Tokyo   City = "tokyo"
+	NewYork City = "new york"
+)
+
 type Person struct {
 	FirstName  string `mgos:"first_name"`
 	LastName   string `mgos:"last_name"`
 	Age        int    `mgos:"age"`
 	BirthMonth int    `mgos:"birth_month"`
+	Gender     Gender `mgos:"gender"`
+	City       City   `mgos:"city"`
 	Hobby      string
 }
 
@@ -39,21 +55,32 @@ func TestFromGetterUsingURLValues(t *testing.T) {
 		if dest.BirthMonth != expect.BirthMonth {
 			t.Errorf("BirthMonth expected (%d) but (%d)", expect.BirthMonth, dest.BirthMonth)
 		}
+
+		if dest.Gender != expect.Gender {
+			t.Errorf("Gender expected (%d) but (%d)", expect.Gender, dest.Gender)
+		}
+
+		if dest.City != expect.City {
+			t.Errorf("City expected (%s) but (%s)", expect.City, dest.City)
+		}
 	}
 
-	test("first_name=Tanaka&last_name=Satoshi&age=18", Person{
+	test("first_name=Tanaka&last_name=Satoshi&age=18&gender=1&city=tokyo", Person{
 		FirstName:  "Tanaka",
 		LastName:   "Satoshi",
 		Age:        18,
 		BirthMonth: 0,
+		Gender:     Male,
+		City:       Tokyo,
 	})
 
-	test("first_name=Inoue&last_name=Shingo&age=19&", Person{
+	test("first_name=Inoue&last_name=Shingo&age=19&city=mexico&", Person{
 		FirstName:  "Inoue",
 		LastName:   "Shingo",
 		Age:        19,
 		BirthMonth: 0,
 		Hobby:      "tenis",
+		City:       "mexico",
 	})
 
 }

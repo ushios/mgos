@@ -26,20 +26,23 @@ func FromGetter(getter Getter, dest interface{}) error {
 			name := typeField.Tag.Get("mgos")
 			if name == "" {
 				continue
-			}		
-	
+			}
+
 			uv := getter.Get(name)
 
-			switch field.Interface().(type) {
-			case int8, uint8, int, uint, int64, uint64:
-				// Insert int value when no errors.
+			switch field.Kind() {
+			case reflect.Int8, reflect.Int, reflect.Int64:
 				if i, err := strconv.Atoi(uv); err == nil {
 					field.SetInt(int64(i))
 				}
-			case string:
+			case reflect.Uint8, reflect.Uint, reflect.Uint64:
+				if i, err := strconv.Atoi(uv); err == nil {
+					field.SetUint(uint64(i))
+				}
+			case reflect.String:
 				field.SetString(uv)
 			default:
-				panic("mgos not supported")
+				panic(fmt.Sprintf("kind (%s) not supported", elem.Kind()))
 			}
 
 		}
