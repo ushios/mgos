@@ -11,6 +11,10 @@ type Getter interface {
 	Get(string) string
 }
 
+type Scanner interface {
+	Scan(interface{}) error
+}
+
 // FromGetter make strunct from value
 func FromGetter(getter Getter, dest interface{}) error {
 
@@ -45,6 +49,12 @@ func FromGetter(getter Getter, dest interface{}) error {
 				if uv != "" && uv != "0" {
 					field.SetBool(true)
 				}
+			case reflect.Struct:
+				// i := field.Interface()
+				// scanner, ok := i.(Scanner)
+				// if !ok {
+				// 	return fmt.Errorf("%s is not Scanner", )
+				// }
 			default:
 				panic(fmt.Sprintf("kind (%s) not supported", elem.Kind()))
 			}
