@@ -11,6 +11,7 @@ type Getter interface {
 	Get(string) string
 }
 
+// Scanner scan data
 type Scanner interface {
 	Scan(interface{}) error
 }
@@ -25,38 +26,46 @@ func FromGetter(getter Getter, dest interface{}) error {
 		elem := reflect.ValueOf(dest).Elem()
 
 		for i := 0; i < elem.NumField(); i++ {
-			field := elem.Field(i)
-			typeField := elem.Type().Field(i)
+			fieldValue := elem.Field(i)
+			refType := elem.Type()
+			typeField := refType.Field(i)
 			name := typeField.Tag.Get("mgos")
 			if name == "" {
 				continue
 			}
 
 			uv := getter.Get(name)
-
-			switch field.Kind() {
+			if uv == "" {
+				continue
+			}
+			switch fieldValue.Kind() {
 			case reflect.Int8, reflect.Int, reflect.Int64:
 				if i, err := strconv.Atoi(uv); err == nil {
-					field.SetInt(int64(i))
+					fieldValue.SetInt(int64(i))
 				}
 			case reflect.Uint8, reflect.Uint, reflect.Uint64:
 				if i, err := strconv.Atoi(uv); err == nil {
-					field.SetUint(uint64(i))
+					fieldValue.SetUint(uint64(i))
 				}
 			case reflect.String:
-				field.SetString(uv)
+				fieldValue.SetString(uv)
 			case reflect.Bool:
 				if uv != "" && uv != "0" {
-					field.SetBool(true)
+					fieldValue.SetBool(true)
 				}
 			case reflect.Struct:
-				// i := field.Interface()
-				// scanner, ok := i.(Scanner)
-				// if !ok {
-				// 	return fmt.Errorf("%s is not Scanner", )
-				// }
+				if err := setToStruct(fieldValue.Interface(), uv, typeField.Name); err != nil {
+					return err
+				}
+			case reflect.Ptr:
+				if fieldValue.IsNil() {
+					fieldValue.Set(reflect.New(typeField.Type.Elem()))
+				}
+				if err := setToStruct(fieldValue.Interface(), uv, typeField.Name); err != nil {
+					return err
+				}
 			default:
-				panic(fmt.Sprintf("kind (%s) not supported", elem.Kind()))
+				panic(fmt.Sprintf("kind elem(%s) field(%s) not supported", elem.Kind(), fieldValue.Kind()))
 			}
 
 		}
@@ -64,4 +73,13 @@ func FromGetter(getter Getter, dest interface{}) error {
 	}
 
 	return nil
+}
+
+func setToStruct(i, v interface{}, name string) error {
+	scanner, ok := i.(Scanner)
+	if !ok {
+		return fmt.Errorf("%s is not Scanner", name)
+	}
+
+	return scanner.Scan(v)
 }
