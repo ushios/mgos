@@ -64,6 +64,12 @@ func FromGetter(getter Getter, dest interface{}) error {
 				if err := setToStruct(fieldValue.Interface(), uv, typeField.Name); err != nil {
 					return err
 				}
+			case reflect.Slice:
+				if err := setToStruct(fieldValue.Interface(), uv, typeField.Name); err != nil {
+					if err := setToStruct(fieldValue.Addr().Interface(), uv, typeField.Name); err != nil {
+						return err
+					}
+				}
 			default:
 				panic(fmt.Sprintf("kind elem(%s) field(%s) not supported", elem.Kind(), fieldValue.Kind()))
 			}
@@ -79,6 +85,7 @@ func setToStruct(i, v interface{}, name string) error {
 	scanner, ok := i.(Scanner)
 	if !ok {
 		return fmt.Errorf("%s is not Scanner", name)
+
 	}
 
 	return scanner.Scan(v)
